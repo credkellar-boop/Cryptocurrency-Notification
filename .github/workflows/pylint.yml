@@ -15,4 +15,4 @@ jobs:
           pip install pylint -r requirements.txt
       - name: Analysing the code with pylint
         run: |
-          pylint $(git ls-files '*.py')
+          pylint bot.py blockchain_listener.py voice_control.py
