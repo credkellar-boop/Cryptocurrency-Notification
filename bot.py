@@ -1,3 +1,4 @@
+""" Real-time blockchain transaction listener for crypto alerts. """
 import os
 from dotenv import load_dotenv
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
