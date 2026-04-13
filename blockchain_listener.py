@@ -1,3 +1,4 @@
+""" This module handles real-time cryptocurrency notifications. """
 import time
 from web3 import Web3
 from dotenv import load_dotenv
