@@ -1,3 +1,4 @@
+""" Real-time blockchain transaction listener for crypto alerts. """
 """ This module handles real-time cryptocurrency notifications. """
 import time
 from web3 import Web3
