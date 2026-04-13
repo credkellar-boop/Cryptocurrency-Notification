@@ -1,3 +1,4 @@
+""" Real-time blockchain transaction listener for crypto alerts. """
 import speech_recognition as sr
 import os
 import subprocess
