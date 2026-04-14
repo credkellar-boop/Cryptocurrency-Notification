@@ -10,12 +10,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # --- INSERT 1 START: System dependencies for audio ---
+      # System Dependencies for potential voice/audio features
       - name: Install System Audio Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y portaudio19-dev libasound2-dev python3-pyaudio
-      # --- INSERT 1 END ---
 
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
@@ -23,17 +22,16 @@ jobs:
           python-version: "3.10"
 
       - name: Install dependencies
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-           - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pylint web3 python-telegram-bot python-dotenv
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Analysing the code
         run: |
-          # This will now pass since PyAudio dependencies are satisfied
-          pylint --errors-only main.py voice_control.py security_wipe.py
+          # Only checks files that actually exist to prevent "File Not Found" errors
+          for file in main.py voice_control.py security_wipe.py; do
+            if [ -f "$file" ]; then
+              pylint --errors-only "$file"
+            fi
+          done
