@@ -1,19 +1,33 @@
 name: Pylint
+
 on: [push]
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.10"
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Analysing the code
-      run: |
-        # This will NO LONGER fail your build for formatting
-        pylint --errors-only bot.py blockchain_listener.py voice_control.py || true
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # --- INSERT 1 START: System dependencies for audio ---
+      - name: Install System Audio Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y portaudio19-dev libasound2-dev python3-pyaudio
+      # --- INSERT 1 END ---
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Analysing the code
+        run: |
+          # This will now pass since PyAudio dependencies are satisfied
+          pylint --errors-only main.py voice_control.py security_wipe.py
