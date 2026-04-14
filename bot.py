@@ -2,7 +2,7 @@
 """Module for Noti_Fy_Crypto_Bot Telegram interface."""
 import os
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Application, CallbackQueryHandler
+from telegram.ext import Application, CallbackQueryHandler, CommandHandler
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -24,6 +24,7 @@ async def send_transaction_alert(context, tx_data):
             InlineKeyboardButton("❌ Deny", callback_data="tx_deny")
         ]
     ]
+    
     reply_markup = InlineKeyboardMarkup(keyboard)
     await context.bot.send_message(chat_id=chat_id, text=text, reply_markup=reply_markup, parse_mode='Markdown')
 
@@ -34,14 +35,21 @@ async def button_callback(update, context):
 
     if query.data == "tx_approve":
         await query.edit_message_text(text="✅ *Transaction Approved*", parse_mode='Markdown')
-    else:
+    elif query.data == "tx_deny":
         await query.edit_message_text(text="❌ *Transaction Denied*", parse_mode='Markdown')
 
-if __name__ == "__main__":
-    # Initialize the bot application
+def main():
+    """Initialize and start the bot."""
     TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+    
+    # Build the application
     app = Application.builder().token(TOKEN).build()
+
+    # Add handler for button clicks
     app.add_handler(CallbackQueryHandler(button_callback))
+
     print("Bot is polling...")
     app.run_polling()
+
+if __name__ == "__main__":
     main()
