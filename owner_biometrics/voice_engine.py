@@ -7,9 +7,9 @@ import time
 def listen_for_system_commands():
     r = sr.Recognizer()
     mic = sr.Microphone()
-
+    
     print("Voice Engine Active. Listening for 'System' wake word...")
-
+    
     with mic as source:
         r.adjust_for_ambient_noise(source, duration=1)
         
@@ -26,13 +26,14 @@ def listen_for_system_commands():
                         print(">> Blockchain Listener Online.")
                         
                     elif "bot status" in text:
-                        # Logic to trigger a status update in your Telegram/Dashboard
-                        print(">> Querying HFT Node Status...")
+                        # Logic to trigger a status update
+                        print(">> Querying HTF Node Status...")
                         
                     elif "lockdown" in text:
                         print(">> EMERGENCY LOCKDOWN INITIATED.")
                         os.system("pkill -f python3")
                         break
+                        
             except sr.UnknownValueError:
                 continue # Ignore background noise
             except Exception as e:
@@ -40,3 +41,4 @@ def listen_for_system_commands():
                 time.sleep(2)
 
 if __name__ == "__main__":
+    listen_for_system_commands()
