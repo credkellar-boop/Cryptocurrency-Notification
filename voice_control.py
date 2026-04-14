@@ -1,5 +1,4 @@
-"""Module for handling voice commands and system interactions."""
-""" Real-time blockchain transaction listener for crypto alerts. """
+"""Module for handling voice commands and real-time blockchain transaction alerts."""
 import speech_recognition as sr
 import os
 import subprocess
