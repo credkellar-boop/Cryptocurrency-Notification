@@ -15,7 +15,7 @@ def log_loop(poll_interval):
     """Main loop to poll the blockchain for new blocks with auto-reconnect."""
     # 1. Establish the connection ONCE outside the loop for stability
     infura_url = os.getenv('INFURA_API_URL')
-    target_address = os.getenv('WALLET_ADDRESS')
+    target_address = os.getenv('0xE7512f65508306Dc669Ef232Bcb31A8Aacd73A37')
     
     w3 = Web3(Web3.HTTPProvider(infura_url))
     
