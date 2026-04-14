@@ -4,7 +4,7 @@ FROM python:3.10-slim
 # Set the working directory in the container
 WORKDIR /app
 
-# Install system dependencies required for PyAudio and other C-based libraries
+# Install system dependencies required for PyAudio
 RUN apt-get update && apt-get install -y \
     gcc \
     portaudio19-dev \
