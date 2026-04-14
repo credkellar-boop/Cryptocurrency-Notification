@@ -18,7 +18,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the project code
 COPY . .
 
-# Command to run both the bot and the listener
-# Note: Using nohup here might not keep the container alive if bot.py exits.
-# Consider using a process manager like supervisord if you need both running reliably.
+# Command to run the bot
 CMD ["python", "bot.py"]
