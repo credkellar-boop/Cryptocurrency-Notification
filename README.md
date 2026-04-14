@@ -4,5 +4,4 @@ Automated system for real-time cryptocurrency transaction alerts. Tracks and not
 Features
 • Real-time Monitoring: Connects to Ethereum/EVM chains via Web3.
 • Manual Override: Interactive buttons to approve or halt transactions.
-• Voice Command Integration: Emergency lockdown and system activation via voice_control.py.
-• Biometric Security: Identity verification required for manual transaction overrides.
+
