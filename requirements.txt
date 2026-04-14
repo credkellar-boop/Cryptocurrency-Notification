@@ -4,4 +4,4 @@ requests>=2.31.0
 eth-typing>=2.3.0
 web3>=5.31.1
 SpeechRecognition>=3.10.0
-PyAudio>=0.2.13
+PyAudio>=0.2.14
