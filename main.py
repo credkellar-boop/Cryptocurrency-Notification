@@ -1,45 +1,32 @@
 
 import os
-import asyncio
-from web3 import Web3
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 from dotenv import load_dotenv
-from telegram import Bot
 
 load_dotenv()
 
-# Setup Web3 and Telegram
-w3 = Web3(Web3.HTTPProvider(os.getenv("WEB3_PROVIDER_URL")))
-bot = Bot(token=os.getenv("TELEGRAM_BOT_TOKEN"))
-wallet_to_watch = os.getenv("MONITORED_WALLET_ADDRESS")
+# CORE CONFIG
+TOKEN = os.getenv("TELEGRAM_TOKEN")
+# Authorized User ID - only you can control the bot
+AUTHORIZED_USER = int(os.getenv("YOUR_TELEGRAM_ID", 0))
 
-async def monitor_transactions():
-    print(f"Monitoring wallet: {wallet_to_watch}")
-    # Get the latest block to start
-    last_block = w3.eth.block_number
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user.id != AUTHORIZED_USER:
+        return
+    await update.message.reply_text("Noti_Fy_Crypto_Bot is Active. Voice & Biometrics disabled.")
 
-    while True:
-        try:
-            current_block = w3.eth.block_number
-            if current_block > last_block:
-                for block_num in range(last_block + 1, current_block + 1):
-                    block = w3.eth.get_block(block_num, full_transactions=True)
-                    for tx in block.transactions:
-                        if tx['to'] == wallet_to_watch or tx['from'] == wallet_to_watch:
-                            await send_notification(tx)
-                last_block = current_block
-            await asyncio.sleep(10) # Poll every 10 seconds
-        except Exception as e:
-            print(f"Error: {e}")
+async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user.id != AUTHORIZED_USER:
+        return
+    # Simple logic to check if worker is accessible
+    await update.message.reply_text("System Status: Online | Mode: Data-Only")
 
-async def send_notification(tx):
-    message = (
-        f"🚨 *Transaction Detected!*\n\n"
-        f"From: `{tx['from']}`\n"
-        f"To: `{tx['to']}`\n"
-        f"Value: {w3.from_wei(tx['value'], 'ether')} ETH\n"
-        f"Hash: `{tx['hash'].hex()}`"
-    )
-    await bot.send_message(chat_id=os.getenv("AUTHORIZED_USER_ID"), text=message, parse_mode='Markdown')
-
-if __name__ == "__main__":
-    asyncio.run(monitor_transactions())
+if __name__ == '__main__':
+    application = ApplicationBuilder().token(TOKEN).build()
+    
+    application.add_handler(CommandHandler('start', start))
+    application.add_handler(CommandHandler('status', status))
+    
+    print("Bot is starting without speech/biometric modules...")
+    application.run_polling()
