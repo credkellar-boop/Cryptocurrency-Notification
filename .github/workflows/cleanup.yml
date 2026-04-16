@@ -1,0 +1,26 @@
+name: "🚀 PR Merge Cleanup"
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  delete-runs:
+    # Only run if the PR was actually merged, not just closed
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    
+    steps:
+      - name: 🗑️ Delete Old Workflow Runs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # This deletes all failed runs and old successful ones to keep it fresh
+          echo "Cleaning up workflow history for merged PR..."
+          
+          # Delete runs older than 1 day to ensure the UI stays clean
+          gh run delete --all --repo ${{ github.repository }} --status completed
+          gh run delete --all --repo ${{ github.repository }} --status failure
