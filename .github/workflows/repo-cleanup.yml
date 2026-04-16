@@ -1,8 +1,8 @@
-name: "🧹 Automatic Code Cleanup"
+name: "🧹 Notification Engine Cleanup"
 
 on:
   workflow_run:
-    workflows: ["High Vibration Heartbeat", "Monad-HFT-Node Self-Heal"] # Replace with your fix workflow names
+    workflows: ["Python application", "Pylint"] # Triggers when core CI passes
     types: [completed]
     branches: [main]
 
@@ -17,15 +17,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: 🗑️ Delete Temporary Workflows
+      - name: 🗑️ Delete Temporary CI Workflows
         run: |
-          # List the files you want to disappear once fixed
-          rm -f .github/workflows/manual_heartbeat.yml
-          rm -f .github/workflows/Sovereign-Auto-Fix.yml
-          rm -f .github/workflows/Monad-HFT-Node-Self-Heal.yml
+          # This cleans up temporary setup workflows for the Notification engine
+          rm -f .github/workflows/dependency-review.yml
           
           git config --global user.name "Janitor Bot"
           git config --global user.email "bot@github.com"
           git add .
-          git commit -m "chore: auto-delete temporary fix workflows after success 🚀" || echo "Nothing to delete"
+          git commit -m "chore: prune temporary CI workflows after successful build 🚀" || echo "Nothing to delete"
           git push
